@@ -35,11 +35,11 @@ def load_data(database_filepath):
 
     X = df['message']
 
-    y = df.drop(['id', 'message', 'original', 'genre'], axis=1)
+    Y = df.drop(['id', 'message', 'original', 'genre'], axis=1)
 
     category_names = y.columns
 
-    return X, y, category_names
+    return X, Y, category_names
 
 
 def tokenize(text, stop_word_corpus='english'):
