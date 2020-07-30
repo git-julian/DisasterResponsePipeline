@@ -1,3 +1,4 @@
+import pickle
 import sys
 import pandas as pd
 from sqlalchemy import create_engine
@@ -37,14 +38,14 @@ def load_data(database_filepath):
 
     Y = df.drop(['id', 'message', 'original', 'genre'], axis=1)
 
-    category_names = y.columns
+    category_names = Y.columns
 
     return X, Y, category_names
 
 
 def tokenize(text, stop_word_corpus='english'):
     '''
-
+    Filter and tokenize the Text corpus with common methods for NLP
 
     :param text: List of Strings - Text to be tokanized
     :param stop_word_corpus: String that gives infoarmion on which stopword corpus to use / Default is set to English
@@ -105,20 +106,21 @@ def evaluate_model(model, X_test, Y_test, category_names):
         :return: df- that holds the metrics for each of the classes
     '''
 
+    # Get model predictions
+    Y_prediction = model.predict(X_test)
     # Prepare Classification Report DataFrame
     df_eval = pd.DataFrame(columns=['emergency_case', 'accuracy', 'precision', 'recall', 'f1-score', 'number_of_cases'])
-
     # count the number of cases for each class
     count_cases = Y_test.sum().to_dict()
 
     # iterate over all classification columns, add model metrics
     for i, column in enumerate(Y_test):
         df_eval.loc[len(df_eval)] = [column, \
-                                     accuracy_score(Y_test[col], Y_pred[:, i]), \
-                                     precision_score(Y_test[col], Y_pred[:, i], average='weighted'), \
-                                     recall_score(Y_test[col], Y_pred[:, i], average='weighted'), \
-                                     f1_score(Y_test[col], Y_pred[:, i], average='weighted'), \
-                                     count_cases[col]
+                                     accuracy_score(Y_test[column], Y_prediction[:, i]), \
+                                     precision_score(Y_test[column], Y_prediction[:, i], average='weighted'), \
+                                     recall_score(Y_test[column], Y_prediction[:, i], average='weighted'), \
+                                     f1_score(Y_test[column], Y_prediction[:, i], average='weighted'), \
+                                     count_cases[column]
                                      ]
 
     df_eval.set_index('emergency_case', inplace=True)

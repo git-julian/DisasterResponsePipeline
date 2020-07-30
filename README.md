@@ -1,5 +1,10 @@
 # Disaster Response Pipeline Project
 
+## Description: 
+Figure Eigth provides a dataset of text messages on disasters such as fires earthquakes etc.
+
+
+
 ### Instructions:
 1. Run the following commands in the project's root directory to set up your database and model.
 
