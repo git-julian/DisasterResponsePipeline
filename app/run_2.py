@@ -1,23 +1,18 @@
 import json
-
-import joblib
 import plotly
 import pandas as pd
 
-
-import nltk
-from nltk.tokenize import word_tokenize, sent_tokenize, RegexpTokenizer
 from nltk.stem import WordNetLemmatizer
-nltk.download(['punkt', 'wordnet', 'stopwords'])
+from nltk.tokenize import word_tokenize
 
 from flask import Flask
 from flask import render_template, request, jsonify
 from plotly.graph_objs import Bar
+from sklearn.externals import joblib
 from sqlalchemy import create_engine
 
-
-
 app = Flask(__name__)
+
 
 def tokenize(text):
     tokens = word_tokenize(text)
@@ -30,24 +25,29 @@ def tokenize(text):
 
     return clean_tokens
 
+
 # load data
-engine = create_engine('sqlite:///data/DisasterResponseData.db')
-df = pd.read_sql_table('Disasters', engine)
+engine = create_engine('sqlite:///../data/DisasterResponse.db')
+df = pd.read_sql_table('CategorizedMessages', engine)
 
 # load model
-model = joblib.load("models/Classifier.pkl")
+model = joblib.load("models/classifier.pkl")
 
 
 # index webpage displays cool visuals and receives user input text for model
 @app.route('/')
 @app.route('/index')
 def index():
-    
     # extract data needed for visuals
     # TODO: Below is an example - modify to extract data for your own visuals
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
-    
+
+    ## Statistics per genre
+    df_genre = df.drop('id', axis=1).groupby(['genre']).sum()  # .reset_index()
+    df_genre = df_genre.transpose().reset_index()
+    df_genre.columns = ['genre', 'direct', 'news', 'social']
+
     # create visuals
     # TODO: Below is an example - modify to create your own visuals
     graphs = [
@@ -68,13 +68,50 @@ def index():
                     'title': "Genre"
                 }
             }
+        },
+        {
+            'data': [
+                #                Bar(
+                #                    x=label_names,
+                #                    y=label_values,
+                #                    marker = dict(color='green')
+                #                )
+                Bar(
+                    name="direct",
+                    x=df_genre["genre"],
+                    y=df_genre["direct"]
+                    # offsetgroup=0,
+                ),
+                Bar(
+                    name="news",
+                    x=df_genre["genre"],
+                    y=df_genre["news"]
+                    # offsetgroup=1,
+                ),
+                Bar(
+                    name="social",
+                    x=df_genre["genre"],
+                    y=df_genre["social"]
+                    # offsetgroup=2,
+                )
+
+            ],
+            'layout': {
+                'title': "Chart Categories per Genre",
+                'yaxis': {
+                    'title': "Number of Messages"
+                },
+                'xaxis': {
+                    'title': "Categories"
+                }
+            }
         }
     ]
-    
+
     # encode plotly graphs in JSON
     ids = ["graph-{}".format(i) for i, _ in enumerate(graphs)]
     graphJSON = json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
-    
+
     # render web page with plotly graphs
     return render_template('master.html', ids=ids, graphJSON=graphJSON)
 
@@ -83,13 +120,13 @@ def index():
 @app.route('/go')
 def go():
     # save user input in query
-    query = request.args.get('query', '') 
+    query = request.args.get('query', '')
 
     # use model to predict classification for query
     classification_labels = model.predict([query])[0]
     classification_results = dict(zip(df.columns[4:], classification_labels))
 
-    # This will render the go.html Please see that file. 
+    # This will render the go.html Please see that file.
     return render_template(
         'go.html',
         query=query,
