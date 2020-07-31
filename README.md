@@ -35,8 +35,8 @@ The classified model should be used in a web app for on-demand text message clas
 
 
 Dashboard:
-![screenshot_1](Pictures/Example1.png)
-![screenshot_1](Pictures/Example1_2.png)
+![screenshot_1](pics/Example1.png)
+![screenshot_1](pics/Example1_2.png)
 On demand text message classification
 ![screenshot_2](drp_2.jpg)
 
@@ -46,9 +46,9 @@ On demand text message classification
 * models/train_classifier.py This script performes the classification task on the traning data and provides a model, that is stored as a .pkl file for later use.
 * app/run.py The run script uses the generates a web-page that provides an interface for the user to use the trained model in order to classify new text data. Additionally it provides some descriptive statistics on the data. (see picture below)
 
-![screenshot_1](Pictures/Top Categories.png)
-![screenshot_1](Pictures/Categorie_categories.png)
-![screenshot_1](Pictures/Message genre.png)
+![screenshot_1](pics/Top Categories.png)
+![screenshot_1](pics/Categorie_categories.png)
+![screenshot_1](pics/Message genre.png)
 
 
 
