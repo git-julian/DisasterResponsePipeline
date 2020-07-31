@@ -65,9 +65,10 @@ On demand text message classification
       `python run.py`
 
   3. Go to http://0.0.0.0:3001/
-```
 
-## Results<a name="results"></a>
+
+## Results <a name="results"></a>
+
 The projects shows the whole data science process.
 The emphasis of this work lies on  providing an end to end ML process instead of getting the best model performance. 
 
