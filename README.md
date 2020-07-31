@@ -46,9 +46,9 @@ On demand text message classification
 * models/train_classifier.py This script performes the classification task on the traning data and provides a model, that is stored as a .pkl file for later use.
 * app/run.py The run script uses the generates a web-page that provides an interface for the user to use the trained model in order to classify new text data. Additionally it provides some descriptive statistics on the data. (see picture below)
 
-![screenshot_1](pics/Top Categories.png)
-![screenshot_1](pics/Categorie_categories.png)
-![screenshot_1](pics/Message genre.png)
+![screenshot_1](pics/top_categories.png)
+![screenshot_1](pics/categories.png)
+![screenshot_1](pics/message_genre.png)
 
 
 
