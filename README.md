@@ -54,7 +54,6 @@ On demand text message classification
 
 
 ## Instructions <a name="instructions"></a>
-```sh
   1. Run the following commands in the project's root directory to set up your database and model.
 
       - To run ETL pipeline that cleans data and stores in database
