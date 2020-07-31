@@ -47,10 +47,49 @@ def index():
     # TODO: Below is an example - modify to extract data for your own visuals
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
-    
+
+    cat_counts = df.drop(axis=1, labels=['id', 'message', 'original', 'genre']).sum().sort_values(ascending=False)
+    cat_names = list(cat_counts.index)
+
+    # Findig the 5 most frequnet categories / classes
+    df_top = list(df.drop(axis=1, labels=['id', 'message', 'original', 'genre']).sum().iloc[:10].index)
+    # Visualisation of the fife most frequent topics
+    # Aggregate on  genre
+    df_agg = df.groupby('genre').sum()
+    # find top 10 classes
+    top_categ = df_agg.drop(axis=1, labels=['id']).sum().sort_values(ascending=False).index[0:10].tolist()
+    # prepere visualisation
+    df_genre_agg = df_agg[top_categ]
+    df_genre_agg = df_genre_agg.transpose().reset_index()
+    df_genre_agg.columns = ['genre', 'direct', 'news', 'social']
+
+
+
     # create visuals
     # TODO: Below is an example - modify to create your own visuals
     graphs = [
+
+# Distribution of all categories
+        {
+            'data': [
+                Bar(
+                    x=cat_names,
+                    y=cat_counts
+                )
+            ],
+
+            'layout': {
+                'title': 'Display categories by occurrence: ',
+                'yaxis': {
+                    'title': "Count"
+                },
+                'xaxis': {
+                    'title': "Category"
+                }
+            }
+        },
+# Distribution of all genres
+
         {
             'data': [
                 Bar(
@@ -68,7 +107,51 @@ def index():
                     'title': "Genre"
                 }
             }
+        },
+
+
+# Top Categoeries by genre
+
+        {
+            'data': [
+
+                Bar(
+                    name="direct",
+                    x=df_genre_agg["genre"],
+                    y=df_genre_agg["direct"]
+                    # offsetgroup=0,
+                ),
+                Bar(
+                    name="news",
+                    x=df_genre_agg["genre"],
+                    y=df_genre_agg["news"]
+                    # offsetgroup=1,
+                ),
+                Bar(
+                    name="social",
+                    x=df_genre_agg["genre"],
+                    y=df_genre_agg["social"]
+                    # offsetgroup=2,
+                )
+
+            ],
+            'layout': {
+                'title': "Top categories by genre:",
+                'yaxis': {
+                    'title': "Number of messages"
+                },
+                'xaxis': {
+                    'title': "Genre distribution of to occurring classes "
+                }
+            }
         }
+
+
+
+
+
+
+
     ]
     
     # encode plotly graphs in JSON
