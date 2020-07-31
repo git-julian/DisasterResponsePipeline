@@ -29,7 +29,7 @@ def load_data(messages_filepath, categories_filepath):
 
 def clean_data(df):
     '''
-
+    The category columns are created, the data is cleand and converted.
     :param df: Dataframe- containing the merged dataset
     :return: df:
     '''
@@ -72,7 +72,7 @@ def clean_data(df):
 def save_data(df, database_filename):
 
     '''
-    Saves a given Dataframe into a SQL Lite Database - The Function overrides any old versions
+    Saves a given dataframe into a SQL Lite Database - The Function overrides any old versions
 
     :param df: The Dataframe that should be stored into the database
     :param database_filename: String of the Database Filename

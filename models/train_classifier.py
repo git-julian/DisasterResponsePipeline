@@ -20,10 +20,10 @@ from sklearn.metrics import classification_report, confusion_matrix, accuracy_sc
 def load_data(database_filepath):
 
     '''
-    Import Data from a given Database into a Pandas Data Frame and provide devide in the Data into a Set of Features and Target
+    Import Data from a given Database into a Pandas data frame and split data  into a set of features and target.
 
-    :param database_filepath: String that holds the Database Filepath
-    :return: X DataFrame that holds the pred Features
+    :param database_filepath: String that holds the Database filepath
+    :return: X DataFrame that holds the pred. Features
     :return: y Is a list of the Target Text
     :retrun: categroy_names: Is a list of feature names
 
@@ -45,7 +45,7 @@ def load_data(database_filepath):
 
 def tokenize(text, stop_word_corpus='english'):
     '''
-    Filter and tokenize the Text corpus with common methods for NLP
+    Filter and tokenize the Text corpus with common methods for natural language processing (nlp)
 
     :param text: List of Strings - Text to be tokanized
     :param stop_word_corpus: String that gives infoarmion on which stopword corpus to use / Default is set to English
@@ -64,7 +64,8 @@ def tokenize(text, stop_word_corpus='english'):
 
 def build_model(do_grid_search = True):
     '''
-  Pipeline that builds the model unsing countVectorizer, TFIDF and a MultiOutput Random Forrest Calssifier
+  Pipeline that builds the model unsing countVectorizer, TFIDF and a MultiOutput Random Forrest classifier
+    :param: boolean - if grid search sould be included into training (grid search boosts up the learning time significantly)
     :return:
     '''
     pipeline = Pipeline([
@@ -83,9 +84,9 @@ def build_model(do_grid_search = True):
         }
 
         # create gridsearch object and return as final model pipeline
-        model_pipeline = GridSearchCV(estimator=pipeline, param_grid=grid_search_parameters, cv=10)
+        grid_pipeline = GridSearchCV(estimator=pipeline, param_grid=grid_search_parameters, cv=10)
 
-        return model_pipeline
+        return grid_pipeline
     else:
         return pipeline
 
