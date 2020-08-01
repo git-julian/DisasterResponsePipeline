@@ -63,6 +63,9 @@ def clean_data(df):
     # Remove duplicates
     df.drop_duplicates(inplace=True)
 
+    # drop all rows where related is not 0 or 1
+    df = df[(df['related'] == 0) | (df['related'] == 1)]
+
 
     return df
 
